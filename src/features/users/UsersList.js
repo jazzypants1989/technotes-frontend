@@ -9,7 +9,11 @@ const UsersList = () => {
       isError, 
       isLoading, 
       isSuccess 
-    } = useGetUsersQuery()
+    } = useGetUsersQuery(undefined, {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    })
 
     let content
 
@@ -25,7 +29,7 @@ const UsersList = () => {
 
       const tableContent = ids?.length
         ? ids.map(userId => <User key={userId} userId={userId} />)
-        : <p>No users found</p>
+        : null
 
       content = (
         <table className="table table--users">

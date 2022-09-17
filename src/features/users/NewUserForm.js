@@ -85,7 +85,7 @@ const content = (
             <div className="form__action-buttons">
                 <button
                 className="icon-button"
-                title="Save User"
+                title="Save"
                 disabled={!canSave}
                 >
                     <FontAwesomeIcon icon={faSave} />
