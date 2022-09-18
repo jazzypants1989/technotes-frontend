@@ -9,7 +9,7 @@ const UsersList = () => {
         isSuccess,
         isError,
         error
-    } = useGetUsersQuery(undefined, {
+    } = useGetUsersQuery('usersList', {
         pollingInterval: 60000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
@@ -17,7 +17,7 @@ const UsersList = () => {
 
     let content
 
-    if (isLoading) content = <p>Loading...</p>
+    if (isLoading) content = <p>Loading... Hopefully, this goes away soon...</p>
 
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>

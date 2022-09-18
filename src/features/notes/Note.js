@@ -1,20 +1,23 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPenToSquare, faCheckCircle, faCirclePlay } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate } from 'react-router-dom'
+import { useGetNotesQuery } from './notesApiSlice'
+import { memo } from 'react'
 
-import { useSelector } from "react-redux"
-import { selectNoteById } from "./notesApiSlice"
+const Note = ({ noteId }) => {
 
-const Note = (noteId) => {
-
-    const note = useSelector(state => selectNoteById(state, noteId))
+    const { note } = useGetNotesQuery("notesList", {
+        selectFromResult: ({ data }) => ({
+           note: data?.entities[noteId]
+        }),
+    })
 
     const navigate = useNavigate()
 
-    if (note){
-        const created = new Date(note.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+    if (note) {
+        const created = new Date(note.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long' })
 
-        const updated = new Date(note.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+        const updated = new Date(note.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long' })
 
         const handleEdit = () => navigate(`/dash/notes/${noteId}`)
 
@@ -22,19 +25,21 @@ const Note = (noteId) => {
             <tr className="table__row">
                 <td className="table__cell note__status">
                     {note.completed
-                        ? <FontAwesomeIcon icon={faCheckCircle} className="note__status--complete" />
-                        : <FontAwesomeIcon icon={faCirclePlay} className="note__status--open" />
+                        ? <span className="note__status--completed">Completed</span>
+                        : <span className="note__status--open">Open</span>
                     }
                 </td>
                 <td className="table__cell note__created">{created}</td>
                 <td className="table__cell note__updated">{updated}</td>
                 <td className="table__cell note__title">{note.title}</td>
-                <td className="table__cell note__username"> {note.username} </td>
+                <td className="table__cell note__username">{note.username}</td>
+
                 <td className="table__cell">
-                    <button 
-                    className="icon-button table__button" 
-                    onClick={handleEdit}> 
-                    <FontAwesomeIcon icon={faPenToSquare} />
+                    <button
+                        className="icon-button table__button"
+                        onClick={handleEdit}
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
                 </td>
             </tr>
@@ -43,4 +48,6 @@ const Note = (noteId) => {
     } else return null
 }
 
-export default Note
+const memoizedNote = memo(Note)
+
+export default memoizedNote

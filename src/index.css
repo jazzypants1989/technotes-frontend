@@ -13,7 +13,7 @@
   --BGCOLOR: #0F172A;
   --BORDER-COLOR: #FFF;
   --COLOR: #FFF;
-  --ERROR: rgba (255, 0, 0, 0.5);
+  --ERROR: 
   --INACTIVE: lightgray;
   --LINK-COLOR: whitesmoke;
   --LINK-HOVER: rgba(245, 245, 245, 0.9);
@@ -27,10 +27,15 @@
 /* || UTILITY CLASSES */
 .errmsg {
   display: inline-block;
-  background-color: var(--TABLE-BGCOLOR);
-  color: var(--ERROR);
+  background-color: rgba(125, 0, 0, 0.5);
+  color: #FFF;
   padding: 0.25em;
   margin-bottom: 0.5em;
+}
+
+.errmsg a:any-link {
+  color: rgba (125, 0, 0, 0.5);
+  text-decoration: underline;
 }
 
 .nowrap {

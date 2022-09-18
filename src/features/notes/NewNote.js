@@ -1,11 +1,20 @@
-import { useSelector } from "react-redux"
-import { selectAllUsers } from "../users/usersApiSlice"
 import NewNoteForm from './NewNoteForm'
+import { useGetUsersQuery } from '../users/usersApiSlice'
+import MoonLoader from 'react-spinners/PulseLoader'
+import useTitle from '../../hooks/useTitle'
 
 const NewNote = () => {
-    const users = useSelector(selectAllUsers)
+    useTitle('techNotes: New Note')
 
-    const content = users.length ? <NewNoteForm users={users} /> : <p> Loading... Hopefully this message goes away soon. </p>
+    const { users } = useGetUsersQuery("usersList", {
+        selectFromResult: ({ data }) => ({
+            users: data?.ids.map(id => data?.entities[id])
+        }),
+    })
+
+    if (!users?.length) return <MoonLoader color={"#FFF"} />
+
+    const content = <NewNoteForm users={users} />
 
     return content
 }
